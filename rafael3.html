@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Adivinhe e Ganhe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: #ffffff10;
+      backdrop-filter: blur(10px);
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00c9a7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #00a98f;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Adivinhe o Número de 1 a 10</h1>
+    <input type="text" id="nome" placeholder="Seu nome" required>
+    <input type="tel" id="telefone" placeholder="Seu número (WhatsApp)" required>
+    <input type="number" id="inputNumero" min="1" max="10" placeholder="Seu palpite" required>
+    <button onclick="verificarNumero()" id="botao">Tentar</button>
+    <p id="mensagem"></p>
+  </div>
+
+  <script>
+    const numeroCorreto = Math.floor(Math.random() * 10) + 1;
+    let tentativaFeita = false;
+
+    function verificarNumero() {
+      if (tentativaFeita) return;
+
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const chute = parseInt(document.getElementById("inputNumero").value);
+
+      const mensagem = document.getElementById("mensagem");
+      const botao = document.getElementById("botao");
+
+      if (!nome || !telefone || isNaN(chute)) {
+        mensagem.textContent = "Preencha todos os campos corretamente!";
+        mensagem.style.color = "#ffcc00";
+        return;
+      }
+
+      tentativaFeita = true;
+
+      if (chute === numeroCorreto) {
+        mensagem.textContent = "🎉 Você acertou! Enviando confirmação...";
+        mensagem.style.color = "#00ff88";
+
+        // Envia mensagem no WhatsApp
+        const texto = `🎉 Acertou no jogo!\nNome: ${nome}\nTelefone: ${telefone}`;
+        const telefoneDestino = "5564992147386"; // Seu número com DDI +55
+        const url = `https://wa.me/${telefoneDestino}?text=${encodeURIComponent(texto)}`;
+        window.open(url, "_blank");
+      } else {
+        mensagem.textContent = `❌ Você errou! O número era ${numeroCorreto}.`;
+        mensagem.style.color = "#ff6666";
+      }
+
+      botao.disabled = true;
+      document.getElementById("nome").disabled = true;
+      document.getElementById("telefone").disabled = true;
+      document.getElementById("inputNumero").disabled = true;
+    }
+  </script>
+</body>
+</html>
